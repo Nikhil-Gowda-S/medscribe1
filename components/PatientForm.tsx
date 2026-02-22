@@ -7,14 +7,14 @@ import { Card } from './ui/Card';
 import toast from 'react-hot-toast';
 
 interface Patient {
-  id: string
+  id?: string   // ✅ make optional
   firstName: string
   lastName: string
   dateOfBirth?: string | null
   gender?: string | null
   phone?: string | null
   email?: string | null
-  address?: string | null   // ✅ ADD THIS
+  address?: string | null
   medicalRecordNumber?: string | null
 }
 
