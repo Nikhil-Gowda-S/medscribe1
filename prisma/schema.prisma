@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Role: doctor | nurse | admin
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String
+  role          String    @default("doctor")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  patients      Patient[]
+  consultations Consultation[]
+  documents     Document[]
+  documentTemplates DocumentTemplate[]
+  auditLogs     AuditLog[]
+}
+
+model Patient {
+  id            String    @id @default(cuid())
+  firstName     String
+  lastName      String
+  dateOfBirth   DateTime?
+  gender        String?
+  phone         String?
+  email         String?
+  address       String?
+  medicalRecordNumber String? @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  doctorId      String
+  doctor        User      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  consultations Consultation[]
+  
+  @@index([doctorId])
+  @@index([medicalRecordNumber])
+  @@index([firstName, lastName])
+  @@index([phone])
+  @@index([dateOfBirth])
+}
+
+// Status: draft | in_progress | finalized | archived
+model Consultation {
+  id            String    @id @default(cuid())
+  patientId     String
+  doctorId      String
+  transcript    String?   @db.Text
+  audioUrl      String?
+  status        String    @default("in_progress")
+  consultationDate DateTime @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  patient       Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor        User      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  documents     Document[]
+  
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([consultationDate])
+  @@index([status])
+}
+
+model Document {
+  id            String    @id @default(cuid())
+  consultationId String
+  doctorId      String
+  type          String    // discharge_summary, case_sheet
+  template      String?   // template key or custom template id
+  content       String    @db.Text
+  metadata      String?   @db.Text // JSON: icd10Codes, medications, etc.
+  pdfUrl        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  consultation  Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  doctor        User      @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  @@index([consultationId])
+  @@index([doctorId])
+  @@index([type])
+}
+
+// Custom document templates per doctor (or global if doctorId null for system templates)
+model DocumentTemplate {
+  id          String   @id @default(cuid())
+  doctorId    String?
+  name        String
+  type        String   // discharge_summary | case_sheet
+  specialty   String?  // cardiology, surgery, etc.
+  body        String   @db.Text // template body with {{patientName}}, {{consultationDate}}, etc.
+  requiredSections String? @db.Text // JSON array of required section names
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  doctor      User?    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  @@index([doctorId])
+  @@index([type])
+}
+
+// Audit trail: who did what, when
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String   // create_patient, update_consultation, generate_document, etc.
+  entityType String   // Patient, Consultation, Document
+  entityId   String?
+  details    String?  @db.Text // JSON
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+  
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
