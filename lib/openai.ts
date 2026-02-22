@@ -81,9 +81,13 @@ async function generateWithGemini(
   for (const modelName of modelsToTry) {
     try {
       const model = genAI.getGenerativeModel({ model: modelName });
-      const result = await model.generateContent(fullPrompt, {
-        generationConfig: { temperature: 0.3, maxOutputTokens: maxTokens },
-      });
+     const result = await model.generateContent({
+  contents: [{ role: "user", parts: [{ text: fullPrompt }] }],
+  generationConfig: {
+    temperature: 0.3,
+    maxOutputTokens: maxTokens,
+  },
+});
       const text = result.response.text();
       if (!text) throw new Error('Empty response');
       logGeneration(modelName, 'gemini');
