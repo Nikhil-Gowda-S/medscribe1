@@ -40,14 +40,14 @@ export async function GET(
       );
     }
 
-    const pdfBuffer = buildPdfBuffer(document);
+const pdfBuffer = buildPdfBuffer(document);
 
-    return new NextResponse(pdfBuffer, {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${document.type}_${document.consultation.patient.lastName}_${new Date().toISOString().split('T')[0]}.pdf"`,
-      },
-    });
+return new NextResponse(new Uint8Array(pdfBuffer), {
+  headers: {
+    'Content-Type': 'application/pdf',
+    'Content-Disposition': `attachment; filename="${document.type}_${document.consultation.patient.lastName}_${new Date().toISOString().split('T')[0]}.pdf"`,
+  },
+});
   } catch (error) {
     console.error('Error generating PDF:', error);
     return NextResponse.json(
