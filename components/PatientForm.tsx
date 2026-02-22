@@ -14,6 +14,7 @@ interface Patient {
   gender?: string | null
   phone?: string | null
   email?: string | null
+  address?: string | null   // ✅ ADD THIS
   medicalRecordNumber?: string | null
 }
 
