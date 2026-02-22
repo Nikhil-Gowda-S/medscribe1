@@ -152,7 +152,7 @@ export default function LoginPage() {
               Login
             </Button>
             <p className="text-center text-sm text-gray-600">
-              Don't have an account?{' '}
+              {"Don't have an account?"}{' '}
               <button
                 type="button"
                 onClick={() => setIsRegistering(true)}
