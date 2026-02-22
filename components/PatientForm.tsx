@@ -7,15 +7,14 @@ import { Card } from './ui/Card';
 import toast from 'react-hot-toast';
 
 interface Patient {
-  id?: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth?: string;
-  gender?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  medicalRecordNumber?: string;
+  id: string
+  firstName: string
+  lastName: string
+  dateOfBirth?: string | null
+  gender?: string | null
+  phone?: string | null
+  email?: string | null
+  medicalRecordNumber?: string | null
 }
 
 interface PatientFormProps {
