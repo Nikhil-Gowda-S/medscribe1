@@ -51,12 +51,12 @@ export async function POST(request: NextRequest) {
 
     const zipBuffer = await zip.generateAsync({ type: 'nodebuffer' });
 
-    return new NextResponse(zipBuffer, {
-      headers: {
-        'Content-Type': 'application/zip',
-        'Content-Disposition': `attachment; filename="medscribe-documents-${dateStr}.zip"`,
-      },
-    });
+return new NextResponse(new Uint8Array(zipBuffer), {
+  headers: {
+    'Content-Type': 'application/zip',
+    'Content-Disposition': `attachment; filename="medscribe-documents-${dateStr}.zip"`,
+  },
+});
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
