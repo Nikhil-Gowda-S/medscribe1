@@ -121,8 +121,15 @@ export default function PatientsPage() {
             Back to List
           </Button>
         </div>
-        <PatientForm
-          patient={editingPatient || undefined}
+<PatientForm
+  patient={
+    editingPatient
+      ? {
+          ...editingPatient,
+          dateOfBirth: editingPatient.dateOfBirth ?? undefined,
+        }
+      : undefined
+  }
           onSave={handleSave}
           onCancel={() => {
             setShowForm(false);
