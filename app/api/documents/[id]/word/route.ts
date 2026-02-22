@@ -86,12 +86,13 @@ export async function GET(
     const buffer = await Packer.toBuffer(doc);
     const filename = `${document.type}_${patient.lastName}_${new Date().toISOString().split('T')[0]}.docx`;
 
-    return new NextResponse(buffer, {
-      headers: {
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'Content-Disposition': `attachment; filename="${filename}"`,
-      },
-    });
+return new NextResponse(new Uint8Array(buffer), {
+  headers: {
+    'Content-Type':
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'Content-Disposition': `attachment; filename="${filename}"`,
+  },
+});
   } catch (error) {
     console.error('Error generating Word document:', error);
     return NextResponse.json(
