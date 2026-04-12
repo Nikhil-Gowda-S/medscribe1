@@ -35,7 +35,7 @@ Vercel is the easiest platform for Next.js applications.
    - `DATABASE_URL` - Your PostgreSQL connection string
    - `NEXTAUTH_URL` - Your Vercel deployment URL
    - `NEXTAUTH_SECRET` - Generate with `openssl rand -base64 32`
-   - `GEMINI_API_KEY` - Your Gemini API key
+   - `GROQ_API_KEY` - Your Groq API key
    - `NODE_ENV` - Set to `production`
 
 4. **Deploy**
@@ -74,7 +74,7 @@ Railway provides PostgreSQL and easy deployment.
    - `DATABASE_URL` (auto-provided)
    - `NEXTAUTH_URL` - Your Railway URL
    - `NEXTAUTH_SECRET` - Generate secret
-   - `GEMINI_API_KEY` - Your Gemini API key
+   - `GROQ_API_KEY` - Your Groq API key
    - `NODE_ENV` - `production`
 
 5. **Deploy**
@@ -114,7 +114,7 @@ Render is another good option for Next.js apps.
    - `DATABASE_URL` - From PostgreSQL service
    - `NEXTAUTH_URL` - Your Render URL
    - `NEXTAUTH_SECRET` - Generate secret
-   - `GEMINI_API_KEY` - Your Gemini API key
+   - `GROQ_API_KEY` - Your Groq API key
    - `NODE_ENV` - `production`
 
 6. **Deploy**
@@ -252,7 +252,7 @@ Ensure these are set in production:
 - [ ] `DATABASE_URL` - PostgreSQL connection string
 - [ ] `NEXTAUTH_URL` - Your production URL
 - [ ] `NEXTAUTH_SECRET` - Random secret (32+ characters)
-- [ ] `GEMINI_API_KEY` - Valid Gemini API key
+- [ ] `GROQ_API_KEY` - Valid Groq API key
 - [ ] `NODE_ENV` - Set to `production`
 
 ## Post-Deployment Checklist
@@ -298,7 +298,7 @@ Ensure these are set in production:
 - Test connection from server
 
 ### API Errors
-- Verify Gemini API key
+- Verify Groq API key
 - Check API rate limits
 - Monitor usage dashboard
 
